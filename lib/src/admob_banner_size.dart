@@ -1,3 +1,4 @@
+import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
@@ -15,10 +16,16 @@ class AdmobBannerSize {
       AdmobBannerSize(width: 468, height: 60, name: 'FULL_BANNER');
   static const AdmobBannerSize LEADERBOARD =
       AdmobBannerSize(width: 728, height: 90, name: 'LEADERBOARD');
-  AdmobBannerSize.SMART_BANNER(BuildContext context):
-        width = MediaQuery.of(context).size.width.toInt(), height = -2, name = 'SMART_BANNER';
-  AdmobBannerSize.ADAPTIVE_BANNER({@required int width}):
-      width = width, height = -2, name = 'ADAPTIVE_BANNER';
+  static const AdmobBannerSize PIXEL =
+      AdmobBannerSize(width: 1, height: 1, name: 'PIXEL');
+  AdmobBannerSize.SMART_BANNER(BuildContext context)
+      : width = MediaQuery.of(context).size.width.toInt(),
+        height = -2,
+        name = 'SMART_BANNER';
+  AdmobBannerSize.ADAPTIVE_BANNER({@required int width})
+      : width = width,
+        height = -2,
+        name = 'ADAPTIVE_BANNER';
 
   const AdmobBannerSize({
     @required this.width,
@@ -33,4 +40,11 @@ class AdmobBannerSize {
         'height': height,
         'name': name,
       };
+
+  Future<Size> get futureSize => hasFixedSize
+      ? Future.value(Size(
+          width.toDouble(),
+          height.toDouble(),
+        ))
+      : Admob.bannerSize(this);
 }
